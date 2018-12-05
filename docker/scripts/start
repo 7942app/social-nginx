@@ -101,7 +101,7 @@ if [ -e /.firstrun ]; then
         git checkout ${GIT_TAG} || exit 1
       fi
       # Don't track file mode changes
-      git config --global core.fileMode false
+      git config core.filemode false
     else
       echo -e "## Using sample index.php in ${WWW_ROOT}"
     fi
