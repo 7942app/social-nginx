@@ -59,8 +59,6 @@ if [ -e /.firstrun ]; then
   fi
   # Ensure upstream branch is the same as local branch
   git config --global push.default simple
-  # Don't track file mode changes
-  git config --global core.fileMode false
 
   # Setup the app source. Options are
   # 1) The code already exists (loaded through an attached Docker volume)
@@ -96,11 +94,14 @@ if [ -e /.firstrun ]; then
         GIT_COMMAND="${GIT_COMMAND} ${REPO}"
       fi
       # Execute the git clone
-      ${GIT_COMMAND} "${APP_HOME}" || exit 1
+      cd ${APP_HOME}
+      ${GIT_COMMAND} . || exit 1
       if [ -n "$GIT_TAG" ]; then
         echo -e "Checking out tag (GIT_TAG): ${GIT_TAG}"
         git checkout ${GIT_TAG} || exit 1
       fi
+      # Don't track file mode changes
+      git config --global core.fileMode false
     else
       echo -e "## Using sample index.php in ${WWW_ROOT}"
     fi
@@ -110,8 +111,10 @@ fi
 if [ -d "${WWW_ROOT}/.git" ]; then
   # Display info if this is a git repo
   echo "## Git repo details"
+  cd ${APP_HOME}
   git remote show origin
 fi
+cd /
 
 if [ -e /.firstrun ]; then
 
