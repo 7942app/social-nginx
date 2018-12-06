@@ -37,13 +37,13 @@ Execute: `mysqldump -h YOUR_MYSQL_HOST -u root -pROOT_PASSWORD YOUR_DATABASE_NAM
 17. Pre-fetch a couple Docker images: `docker pull mariadb && docker pull tinkery/social-nginx`
 18. Change into the dev directory `cd dev`
 19. Note: We're going to run a local MySQL database (technically, it's MariaDB). The configuration includes a root password and a user and password for a SocialEngine database. This is a development only database instance. You can leave these as-is, or change to your preference by editing docker-compose.yml. It isn't necessary that this matches your database.
-20. Make the scripts excecutable: `chmod +x start stop enter enterdb`
-21. Execute `./start` to launch the mariadb and social-nginx containers using the SocialEngine code you have set up. Startup may take a couple minutes. If you execute `docker ps` you should see the two containers running. If you experience trouble, you can execute `./stop` to shutdown these instances, then execute `docker-compose up` to see startup messages from the containers.
-22. Executing `./enter` will give you a shell inside the social-nginx container.  Executing `./enterdb` will give you a shell inside the mariadb container.
+20. Make the scripts excecutable: `chmod +x *.sh`
+21. Execute `./start.sh` to launch the mariadb and social-nginx containers using the SocialEngine code you have set up. Startup may take a couple minutes. If you execute `docker ps` you should see the two containers running. If you experience trouble, you can execute `./stop.sh` to shutdown these instances, then execute `docker-compose up` to see startup messages from the containers.
+22. Executing `./enter.sh` will give you a shell inside the social-nginx container.  Executing `./enterdb.sh` will give you a shell inside the mariadb container.
 23. Launch your browser to access your site at http://localhost.
 24. You can edit your site files directly in the src directory. If you make changes through the admin panel (such as installing plugins) these changes will be in your local src directory as well. Note that you may need to tweak directory permissions in your docker container when installing plugins or themes. I will work on fixing this up later.
 25. If you make changes that impact your database (most do) you need to export your database so it will be saved in source control. To do this, execute: `docker exec social-nginx backupdb`. This will backup the database to conf/db/default.sql.
-26. Shut down: `./stop`
+26. Shut down: `./stop.sh`
 27. (Optional) If storing your site in a private GitHub project, you can push it now:
 
 This prevents file mode changes from being tracked by Git (only need to execute this once):
