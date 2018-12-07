@@ -283,6 +283,19 @@ if [ -e /.firstrun ]; then
   #    fi
   #fi
 
+  # Wait for database startup
+  retries=0
+  [ -z "$MYSQL_ROOT_PW" ] || rootpw="-p${MYSQL_ROOT_PW}"
+  until `mysql -h ${MYSQL_HOST} --protocol TCP -u root ${rootpw} -e 'show databases;' > /dev/null 2>&1`; do
+    if [ $retries -ge 10 ]; then
+        >&2 echo "Too many retries. Aborting."
+        exit 1
+    fi
+    retries=`expr ${retries} + 1`
+    echo "Waiting for database: @${MYSQL_HOST}"
+    sleep 5
+  done
+
   if [ "$SE_MODE" == "$DEVELOPMENT" ]; then
     if [ -d "${APP_DB}" ]; then
       # Initialize the database
